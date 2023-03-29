@@ -1,0 +1,2 @@
+# Don't include big fat node_modules folder into repository
+node_modules/
