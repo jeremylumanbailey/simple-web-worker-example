@@ -4,11 +4,22 @@ function wait(seconds) {
 	let begin = performance.now()
   while((new Date() - start) / 1000 < seconds) {}
 	const result = performance.now() - begin
-	console.log('finished in about: ' + Math.round(result / 1000) + ' seconds')
+	const message = 'finished in about: ' + Math.round(result / 1000) + ' seconds'
+	return message
 }
 
-const handleClick = () => {
-	wait(5)
+const pauseWithoutWebWorker = () => {
+	const funcResult = wait(5)
+	console.log(funcResult)
+}
+
+const pauseWithWebWorker = () => {
+	const myWorker = new Worker('worker.js')
+  myWorker.postMessage(5)
+	myWorker.onmessage = function(event){
+		console.log(event.data, 'event.data')
+	}
+	
 }
 const increaseValue = () => {
 	let value = document.getElementById('value').innerHTML
@@ -16,11 +27,6 @@ const increaseValue = () => {
 	value++
 	console.log('value of the number was increased to ' + value)
 	document.getElementById('value').innerHTML = value
-}
-
-const pauseWithWebWorker = () => {
-	const myWorker = new Worker('worker.js')
-  myWorker.postMessage(5)
 }
 
 const counter = () => {
