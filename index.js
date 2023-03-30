@@ -1,23 +1,25 @@
-function wait(seconds) {
+const wait = (seconds) => {
   let start = new Date()
 	console.log('Started waiting on some heavy computation...')
 	let begin = performance.now()
   while((new Date() - start) / 1000 < seconds) {}
 	const result = performance.now() - begin
-	const message = 'finished in about: ' + Math.round(result / 1000) + ' seconds'
+	const message = 'finished from main thread in about: ' + Math.round(result / 1000) + ' seconds. Notice how the UI was seized up?'
 	return message
 }
 
 const pauseWithoutWebWorker = () => {
 	const funcResult = wait(5)
 	console.log(funcResult)
+	document.getElementById('buttonResult').innerHTML = funcResult
 }
 
 const pauseWithWebWorker = () => {
 	const myWorker = new Worker('worker.js')
   myWorker.postMessage(5)
-	myWorker.onmessage = function(event){
+	myWorker.onmessage = (event) => {
 		console.log(event.data, 'event.data')
+		document.getElementById('buttonResult').innerHTML = event.data
 	}
 	
 }
@@ -35,4 +37,4 @@ const counter = () => {
 	document.getElementById('container').innerHTML = seconds
 }
 
-const cancel = setInterval(counter, 1000);
+const cancel = setInterval(counter, 1000)

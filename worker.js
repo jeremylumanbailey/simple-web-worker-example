@@ -1,5 +1,5 @@
-onmessage = function(e) {
-	const seconds = parseInt(e.data)
+onmessage = (event) => {
+	const seconds = parseInt(event.data)
 	wait(seconds)
 	function wait(seconds) {
 		let start = new Date()
@@ -7,7 +7,7 @@ onmessage = function(e) {
 		let begin = performance.now()
 		while((new Date() - start) / 1000 < seconds) {}
 		const result = performance.now() - begin
-		const message = 'finished in about: ' + Math.round(result / 1000) + ' seconds' 
+		const message = 'finished from worker thread in about: ' + Math.round(result / 1000) + ' seconds' 
 		postMessage(message)
 	}
 }
